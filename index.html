@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Batas_Administrasi_1.js"></script>
+        <script src="data/Sebaran_Perumahan2_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_Batas_Administrasi_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Kelurahan</th>\
+                        <td>' + (feature.properties['Kelurahan'] !== null ? autolinker.link(feature.properties['Kelurahan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Batas_Administrasi_1_0() {
+            return {
+                pane: 'pane_Batas_Administrasi_1',
+                opacity: 1,
+                color: 'rgba(247,1,13,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Batas_Administrasi_1');
+        map.getPane('pane_Batas_Administrasi_1').style.zIndex = 401;
+        map.getPane('pane_Batas_Administrasi_1').style['mix-blend-mode'] = 'normal';
+        var layer_Batas_Administrasi_1 = new L.geoJson(json_Batas_Administrasi_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Batas_Administrasi_1',
+            layerName: 'layer_Batas_Administrasi_1',
+            pane: 'pane_Batas_Administrasi_1',
+            onEachFeature: pop_Batas_Administrasi_1,
+            style: style_Batas_Administrasi_1_0,
+        });
+        bounds_group.addLayer(layer_Batas_Administrasi_1);
+        map.addLayer(layer_Batas_Administrasi_1);
+        function pop_Sebaran_Perumahan2_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Perumahan</th>\
+                        <td>' + (feature.properties['Perumahan'] !== null ? autolinker.link(feature.properties['Perumahan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Status</th>\
+                        <td>' + (feature.properties['Status'] !== null ? autolinker.link(feature.properties['Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kelurahan</th>\
+                        <td>' + (feature.properties['Kelurahan'] !== null ? autolinker.link(feature.properties['Kelurahan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Sebaran_Perumahan2_2_0() {
+            return {
+                pane: 'pane_Sebaran_Perumahan2_2',
+                opacity: 1,
+                color: 'rgba(247,251,22,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sebaran_Perumahan2_2');
+        map.getPane('pane_Sebaran_Perumahan2_2').style.zIndex = 402;
+        map.getPane('pane_Sebaran_Perumahan2_2').style['mix-blend-mode'] = 'normal';
+        var layer_Sebaran_Perumahan2_2 = new L.geoJson(json_Sebaran_Perumahan2_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sebaran_Perumahan2_2',
+            layerName: 'layer_Sebaran_Perumahan2_2',
+            pane: 'pane_Sebaran_Perumahan2_2',
+            onEachFeature: pop_Sebaran_Perumahan2_2,
+            style: style_Sebaran_Perumahan2_2_0,
+        });
+        bounds_group.addLayer(layer_Sebaran_Perumahan2_2);
+        map.addLayer(layer_Sebaran_Perumahan2_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Sebaran_Perumahan2_2.png" /> Sebaran_Perumahan2': layer_Sebaran_Perumahan2_2,'<img src="legend/Batas_Administrasi_1.png" /> Batas_Administrasi': layer_Batas_Administrasi_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Sebaran_Perumahan2_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Perumahan'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
